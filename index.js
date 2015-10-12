@@ -1,6 +1,13 @@
 module.exports = function (line) {
   var parsed = {};
 
+  //
+  // Trailing newline? NOTHX
+  //
+  if (line.match(/\n$/)) {
+    line = line.slice(0, line.length - 1);
+  }
+
   [
     { 'timestamp'                   : ' '   },
     { 'elb'                         : ' '   },
