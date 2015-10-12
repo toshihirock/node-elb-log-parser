@@ -1,7 +1,7 @@
 {
   "name": "elb-log-parser",
   "version": "0.0.1",
-  "description": "A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser ",
+  "description": "A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser",
   "main": "index.js",
   "scripts": {
     "test": "node ./test.js"
