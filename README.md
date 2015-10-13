@@ -1,5 +1,8 @@
 # elb-log-parser
 
+[![npm version](https://badge.fury.io/js/elb-log-parser.png)](https://badge.fury.io/js/elb-log-parser)
+
+
 A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser 
 
 ## Example
