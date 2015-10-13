@@ -1,5 +1,18 @@
 module.exports = function (line) {
   var parsed = {};
+  var url = require('url');
+
+  var request_labels = 
+  [
+    'request_method',
+    'request_uri',
+    'request_http_version',
+    'request_uri_scheme',
+    'request_uri_host',
+    'request_port',
+    'request_uri_path',
+    'request_uri_query'
+  ]
 
   //
   // Trailing newline? NOTHX
@@ -11,7 +24,8 @@ module.exports = function (line) {
   [
     { 'timestamp'                   : ' '   },
     { 'elb'                         : ' '   },
-    { 'client'                      : ' '   },
+    { 'client'                      : ':'   },
+    { 'client_port'                 : ' '   },
     { 'backend'                     : ' '   },
     { 'request_processing_time'     : ' '   },
     { 'backend_processing_time'     : ' '   },
@@ -49,6 +63,43 @@ module.exports = function (line) {
     line = line.substr(m.index + delimiter.length);
     parsed[label] = field;
   });
+
+  // backend
+  if(parsed.backend != -1) {
+    parsed['backend_port'] = parsed.backend.split(":")[1];
+    parsed['backend'] = parsed.backend.split(":")[0];
+  } else {
+    parsed['backend_port'] = '-1';
+  }
+
+  // request
+  if(parsed.request != '- - - ') {
+    var i = 0;
+    var method = parsed.request.split(" ")[0];
+    var url = url.parse(parsed.request.split(" ")[1]);
+    var http_version = parsed.request.split(" ")[2];
+
+    parsed[request_labels[i]] = method;
+    i++;
+    parsed[request_labels[i]] = url.href;
+    i++;
+    parsed[request_labels[i]] = http_version;
+    i++;
+    parsed[request_labels[i]] = url.protocol;
+    i++;
+    parsed[request_labels[i]] = url.hostname;
+    i++;
+    parsed[request_labels[i]] = url.port;
+    i++;
+    parsed[request_labels[i]] = url.pathname;
+    i++;
+    parsed[request_labels[i]] = url.query;
+
+  } else {
+    request_labels.forEach(function(label) {
+      parsed[label] = '-';
+    });
+  }
 
   return parsed;
 };

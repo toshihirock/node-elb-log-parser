@@ -8,8 +8,10 @@ tap.test('http traffic', function (t) {
   );
   t.equal(parsed.timestamp, '2015-05-13T23:39:43.945958Z', 'we have timestamp');
   t.equal(parsed.elb, 'my-loadbalancer', 'we have ELB');
-  t.equal(parsed.client, '192.168.131.39:2817', 'we have client');
-  t.equal(parsed.backend, '10.0.0.1:80', 'we have backend');
+  t.equal(parsed.client, '192.168.131.39', 'we have client');
+  t.equal(parsed.client_port, '2817', 'we have client_port');
+  t.equal(parsed.backend, '10.0.0.1', 'we have backend');
+  t.equal(parsed.backend_port, '80', 'we have backend_port');
   t.equal(parsed.request_processing_time, '0.000073', 'we have request_processing_time');
   t.equal(parsed.backend_processing_time, '0.001048', 'we have backend_processing_time');
   t.equal(parsed.response_processing_time, '0.000057', 'we have response_processing_time');
@@ -30,8 +32,10 @@ tap.test('https traffic', function (t) {
   );
   t.equal(parsed.timestamp, '2015-05-13T23:39:43.945958Z', 'we have timestamp');
   t.equal(parsed.elb, 'my-loadbalancer', 'we have ELB');
-  t.equal(parsed.client, '192.168.131.39:2817', 'we have client');
-  t.equal(parsed.backend, '10.0.0.1:80', 'we have backend');
+  t.equal(parsed.client, '192.168.131.39', 'we have client');
+  t.equal(parsed.client_port, '2817', 'we have client_port');
+  t.equal(parsed.backend, '10.0.0.1', 'we have backend');
+  t.equal(parsed.backend_port, '80', 'we have backend_port');
   t.equal(parsed.request_processing_time, '0.000086', 'we have request_processing_time');
   t.equal(parsed.backend_processing_time, '0.001048', 'we have backend_processing_time');
   t.equal(parsed.response_processing_time, '0.001337', 'we have response_processing_time');
@@ -50,21 +54,8 @@ tap.test('tcp traffic', function (t) {
   var parsed = parse(
     '2015-05-13T23:39:43.945958Z my-loadbalancer 192.168.131.39:2817 10.0.0.1:80 0.001069 0.000028 0.000041 - - 82 305 "- - - " "-" - -'
   );
-  t.equal(parsed.timestamp, '2015-05-13T23:39:43.945958Z', 'we have timestamp');
-  t.equal(parsed.elb, 'my-loadbalancer', 'we have ELB');
-  t.equal(parsed.client, '192.168.131.39:2817', 'we have client');
-  t.equal(parsed.backend, '10.0.0.1:80', 'we have backend');
-  t.equal(parsed.request_processing_time, '0.001069', 'we have request_processing_time');
-  t.equal(parsed.backend_processing_time, '0.000028', 'we have backend_processing_time');
-  t.equal(parsed.response_processing_time, '0.000041', 'we have response_processing_time');
-  t.equal(parsed.elb_status_code, '-', 'we have elb_status_code');
-  t.equal(parsed.backend_status_code, '-', 'we have backend_status_code');
-  t.equal(parsed.received_bytes, '82', 'we have received_bytes');
-  t.equal(parsed.sent_bytes, '305', 'we have sent_bytes');
   t.equal(parsed.request, '- - - ', 'we have request');
   t.equal(parsed.user_agent, '-', 'we have user_anget');
-  t.equal(parsed.ssl_cipher, '-', 'we have ssl_cipher');
-  t.equal(parsed.ssl_protocol, '-', 'we have ssl_protocol');
   t.end();
 });
 
@@ -72,20 +63,16 @@ tap.test('ssl traffic', function (t) {
   var parsed = parse(
     '2015-05-13T23:39:43.945958Z my-loadbalancer 192.168.131.39:2817 10.0.0.1:80 0.001065 0.000015 0.000023 - - 57 502 "- - - " "-" ECDHE-ECDSA-AES128-GCM-SHA256 TLSv1.2'
   );
-  t.equal(parsed.timestamp, '2015-05-13T23:39:43.945958Z', 'we have timestamp');
-  t.equal(parsed.elb, 'my-loadbalancer', 'we have ELB');
-  t.equal(parsed.client, '192.168.131.39:2817', 'we have client');
-  t.equal(parsed.backend, '10.0.0.1:80', 'we have backend');
-  t.equal(parsed.request_processing_time, '0.001065', 'we have request_processing_time');
-  t.equal(parsed.backend_processing_time, '0.000015', 'we have backend_processing_time');
-  t.equal(parsed.response_processing_time, '0.000023', 'we have response_processing_time');
-  t.equal(parsed.elb_status_code, '-', 'we have elb_status_code');
-  t.equal(parsed.backend_status_code, '-', 'we have backend_status_code');
-  t.equal(parsed.received_bytes, '57', 'we have received_bytes');
-  t.equal(parsed.sent_bytes, '502', 'we have sent_bytes');
-  t.equal(parsed.request, '- - - ', 'we have request');
-  t.equal(parsed.user_agent, '-', 'we have user_anget');
   t.equal(parsed.ssl_cipher, 'ECDHE-ECDSA-AES128-GCM-SHA256', 'we have ssl_cipher');
   t.equal(parsed.ssl_protocol, 'TLSv1.2', 'we have ssl_protocol');
+  t.end();
+});
+
+tap.test('doesn\'t receive traffic ', function (t) {
+  var parsed = parse(
+    '2015-05-13T23:39:43.945958Z my-loadbalancer 192.168.131.39:2817 -1 0.001065 0.000015 0.000023 - - 57 502 "- - - " "-" ECDHE-ECDSA-AES128-GCM-SHA256 TLSv1.2'
+  );
+  t.equal(parsed.backend, '-1', 'we have backend');
+  t.equal(parsed.backend_port, '-1', 'we have backend_port');
   t.end();
 });
