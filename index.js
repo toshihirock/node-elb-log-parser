@@ -12,7 +12,7 @@ module.exports = function (line) {
     'request_port',
     'request_uri_path',
     'request_uri_query'
-  ]
+  ];
 
   //
   // Trailing newline? NOTHX
