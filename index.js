@@ -9,7 +9,7 @@ module.exports = function (line) {
     'request_http_version',
     'request_uri_scheme',
     'request_uri_host',
-    'request_port',
+    'request_uri_port',
     'request_uri_path',
     'request_uri_query'
   ];

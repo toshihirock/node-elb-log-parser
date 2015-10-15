@@ -20,6 +20,14 @@ tap.test('http traffic', function (t) {
   t.equal(parsed.received_bytes, '0', 'we have received_bytes');
   t.equal(parsed.sent_bytes, '29', 'we have sent_bytes');
   t.equal(parsed.request, 'GET http://www.example.com:80/ HTTP/1.1', 'we have request');
+  t.equal(parsed.request_method, 'GET', 'we have request_method');
+  t.equal(parsed.request_uri, 'http://www.example.com:80/', 'we have request_uri');
+  t.equal(parsed.request_http_version, 'HTTP/1.1', 'we have request_http_version');
+  t.equal(parsed.request_uri_scheme, 'http:', 'we have request_uri_scheme');
+  t.equal(parsed.request_uri_host, 'www.example.com', 'we have request_uri_host');
+  t.equal(parsed.request_uri_port, '80', 'we have request_uri_port');
+  t.equal(parsed.request_uri_path, '/', 'we have request_uri_path');
+  t.equal(parsed.request_uri_query, null, 'we have request_uri_query');
   t.equal(parsed.user_agent, 'curl/7.38.0', 'we have user_anget');
   t.equal(parsed.ssl_cipher, '-', 'we have ssl_cipher');
   t.equal(parsed.ssl_protocol, '-', 'we have ssl_protocol');
@@ -28,7 +36,7 @@ tap.test('http traffic', function (t) {
 
 tap.test('https traffic', function (t) {
   var parsed = parse(
-    '2015-05-13T23:39:43.945958Z my-loadbalancer 192.168.131.39:2817 10.0.0.1:80 0.000086 0.001048 0.001337 200 200 0 57 "GET https://www.example.com:443/ HTTP/1.1" "curl/7.38.0" DHE-RSA-AES128-SHA TLSv1.2'
+    '2015-05-13T23:39:43.945958Z my-loadbalancer 192.168.131.39:2817 10.0.0.1:80 0.000086 0.001048 0.001337 200 200 0 57 "GET https://mytest-111.ap-northeast-1.elb.amazonaws.com:443/p/a/t/h?foo=bar&hoge=fuga HTTP/1.1" "curl/7.38.0" DHE-RSA-AES128-SHA TLSv1.2'
   );
   t.equal(parsed.timestamp, '2015-05-13T23:39:43.945958Z', 'we have timestamp');
   t.equal(parsed.elb, 'my-loadbalancer', 'we have ELB');
@@ -43,7 +51,15 @@ tap.test('https traffic', function (t) {
   t.equal(parsed.backend_status_code, '200', 'we have backend_status_code');
   t.equal(parsed.received_bytes, '0', 'we have received_bytes');
   t.equal(parsed.sent_bytes, '57', 'we have sent_bytes');
-  t.equal(parsed.request, 'GET https://www.example.com:443/ HTTP/1.1', 'we have request');
+  t.equal(parsed.request, 'GET https://mytest-111.ap-northeast-1.elb.amazonaws.com:443/p/a/t/h?foo=bar&hoge=fuga HTTP/1.1', 'we have request');
+  t.equal(parsed.request_method, 'GET', 'we have request_method');
+  t.equal(parsed.request_uri, 'https://mytest-111.ap-northeast-1.elb.amazonaws.com:443/p/a/t/h?foo=bar&hoge=fuga', 'we have request_uri');
+  t.equal(parsed.request_http_version, 'HTTP/1.1', 'we have request_http_version');
+  t.equal(parsed.request_uri_scheme, 'https:', 'we have request_uri_scheme');
+  t.equal(parsed.request_uri_host, 'mytest-111.ap-northeast-1.elb.amazonaws.com', 'we have request_uri_host');
+  t.equal(parsed.request_uri_port, '443', 'we have request_uri_port');
+  t.equal(parsed.request_uri_path, '/p/a/t/h', 'we have request_uri_path');
+  t.equal(parsed.request_uri_query, 'foo=bar&hoge=fuga', 'we have request_uri_query');
   t.equal(parsed.user_agent, 'curl/7.38.0', 'we have user_anget');
   t.equal(parsed.ssl_cipher, 'DHE-RSA-AES128-SHA', 'we have ssl_cipher');
   t.equal(parsed.ssl_protocol, 'TLSv1.2', 'we have ssl_protocol');
