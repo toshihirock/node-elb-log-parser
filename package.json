@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "description": "A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser",
   "main": "index.js",
+  "bin": {
+    "elb-log-parser": "index.js"
+  },
   "scripts": {
     "test": "node ./test.js"
   },
@@ -20,5 +23,8 @@
   "license": "MIT",
   "devDependencies": {
     "tap": "~0.4.3"
+  },
+  "dependencies": {
+    "split": "^1.0.0"
   }
 }

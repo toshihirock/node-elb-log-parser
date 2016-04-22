@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/elb-log-parser.png)](https://badge.fury.io/js/elb-log-parser)
 [![Build Status](https://travis-ci.org/toshihirock/node-elb-log-parser.svg?branch=master)](https://travis-ci.org/toshihirock/node-elb-log-parser)
 
-A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser 
+A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser.
 
 ## When I use this npm?
 
@@ -13,10 +13,17 @@ A basic parser for ELB access logs, strongly inspired by node-clf-parser https:/
 ## Install
 
 ```
-$npm install elb-log-parser
+npm install -g elb-log-parser
 ```
 
-## Example
+## Example command-line usage
+
+```
+906058675309_elasticloadbalancing_us-east-1_my-elb_20160420T1700Z_10.0.33.113_115hdtdv.log > elb-log-parser
+```
+Outputs JSON which can then be further processed with e.g. something like the [json](https://www.npmjs.com/package/json) tool.
+
+## Example API usage
 
 ```
 node-elb-log-parser$node

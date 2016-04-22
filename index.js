@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 module.exports = function (line) {
   var parsed = {};
   var url = require('url');
@@ -103,3 +104,20 @@ module.exports = function (line) {
 
   return parsed;
 };
+
+if (require.main === module) {
+  var split = require('split');
+  var Transform = require('stream').Transform;
+  process.stdin
+    .pipe(split())
+    .pipe(new Transform({
+      decodeStrings: false,
+      transform: function (line, encoding, callback) {
+        if (line) {
+          this.push(JSON.stringify(module.exports(line)) + '\n');
+        }
+        callback();
+      }
+    }))
+    .pipe(process.stdout);
+}
