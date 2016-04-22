@@ -1,6 +1,6 @@
 {
   "name": "elb-log-parser",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A basic parser for ELB access logs, strongly inspired by node-clf-parser https://github.com/jfhbrook/node-clf-parser",
   "main": "index.js",
   "bin": {
