@@ -23,25 +23,26 @@ module.exports = function (line) {
   }
 
   [
-    { 'timestamp'                   : ' '   },
-    { 'elb'                         : ' '   },
-    { 'client'                      : ':'   },
-    { 'client_port'                 : ' '   },
-    { 'backend'                     : ' '   },
-    { 'request_processing_time'     : ' '   },
-    { 'backend_processing_time'     : ' '   },
-    { 'response_processing_time'    : ' '   },
-    { 'elb_status_code'             : ' '   },
-    { 'backend_status_code'         : ' '   },
-    { 'received_bytes'              : ' '   },
-    { 'sent_bytes'                  : ' "'  },
-    { 'request'                     : '" "' },
-    { 'user_agent'                  : '" '  },
-    { 'ssl_cipher'                  : ' '   },
-    { 'ssl_protocol'                : ' '   }
+    { 'timestamp'                   : { delim: ' '   } },
+    { 'elb'                         : { delim: ' '   } },
+    { 'client'                      : { delim: ':'   } },
+    { 'client_port'                 : { delim: ' '   } },
+    { 'backend'                     : { delim: ' '   } },
+    { 'request_processing_time'     : { delim: ' '   , asFloat: true } },
+    { 'backend_processing_time'     : { delim: ' '   , asFloat: true } },
+    { 'response_processing_time'    : { delim: ' '   , asFloat: true } },
+    { 'elb_status_code'             : { delim: ' '   , asFloat: true } },
+    { 'backend_status_code'         : { delim: ' '   , asFloat: true } },
+    { 'received_bytes'              : { delim: ' '   , asFloat: true } },
+    { 'sent_bytes'                  : { delim: ' "'  , asFloat: true } },
+    { 'request'                     : { delim: '" "' } },
+    { 'user_agent'                  : { delim: '" '  } },
+    { 'ssl_cipher'                  : { delim: ' '   } },
+    { 'ssl_protocol'                : { delim: ' '   } }
   ].some(function (t) {
     var label = Object.keys(t)[0];
-    delimiter = t[label]
+    delimiter = t[label].delim;
+    var asFloat = t[label].asFloat;
     var m = line.match(delimiter);
     if (m === null) {
       //
@@ -55,14 +56,11 @@ module.exports = function (line) {
       else {
         field = line.substr(0, m.index);
       }
-
-      parsed[label] = field;
-
-      return true;
+    } else {
+      field = line.substr(0, m.index);
+      line = line.substr(m.index + delimiter.length);
     }
-    field = line.substr(0, m.index);
-    line = line.substr(m.index + delimiter.length);
-    parsed[label] = field;
+    parsed[label] = asFloat ? parseFloat(field) : field;
   });
 
   // backend
