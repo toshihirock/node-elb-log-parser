@@ -1,9 +1,8 @@
-#! /usr/bin/env node
 module.exports = function (line) {
   var parsed = {};
   var url = require('url');
 
-  var request_labels = 
+  var request_labels =
   [
     'request_method',
     'request_uri',
@@ -15,6 +14,12 @@ module.exports = function (line) {
     'request_uri_query'
   ];
 
+  //
+  // Ignore ELBAccessLogTestFile
+  //
+  if (line.match(/^Enable AccessLog for ELB:/)) {
+    return parsed;
+  }
   //
   // Trailing newline? NOTHX
   //
