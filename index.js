@@ -1,4 +1,3 @@
-#! /usr/bin/env node
 module.exports = function (line) {
   var parsed = {};
   var url = require('url');
