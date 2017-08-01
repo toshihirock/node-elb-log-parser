@@ -3,7 +3,7 @@ module.exports = function (line) {
   var parsed = {};
   var url = require('url');
 
-  var request_labels = 
+  var request_labels =
   [
     'request_method',
     'request_uri',
@@ -104,6 +104,16 @@ module.exports = function (line) {
 
   return parsed;
 };
+
+process.stdout.on('error', function(err) {
+  running = false;
+  if(err.code === 'EPIPE') {
+    process.exit(0);
+  } else {
+    process.stderr.write(JSON.stringify(err) + '\n');
+    process.exit(1);
+  }
+})
 
 if (require.main === module) {
   var split = require('split');
