@@ -3,7 +3,7 @@ module.exports = function (line) {
   var parsed = {};
   var url = require('url');
 
-  var request_labels = 
+  var request_labels =
   [
     'request_method',
     'request_uri',
@@ -66,7 +66,7 @@ module.exports = function (line) {
   });
 
   // backend
-  if(parsed.backend != -1) {
+  if (typeof parsed.backend !== 'undefined' && parsed.backend != -1) {
     parsed['backend_port'] = parsed.backend.split(":")[1];
     parsed['backend'] = parsed.backend.split(":")[0];
   } else {
@@ -74,7 +74,7 @@ module.exports = function (line) {
   }
 
   // request
-  if(parsed.request != '- - - ') {
+  if (typeof parsed.request !== 'undefined' && parsed.request != '- - - ') {
     var i = 0;
     var method = parsed.request.split(" ")[0];
     var url = url.parse(parsed.request.split(" ")[1]);
@@ -96,7 +96,7 @@ module.exports = function (line) {
     i++;
     parsed[request_labels[i]] = url.query;
 
-  } else {
+  } else if (typeof parsed.request !== 'undefined') {
     request_labels.forEach(function(label) {
       parsed[label] = '-';
     });
