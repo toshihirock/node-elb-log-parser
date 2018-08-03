@@ -3,7 +3,7 @@ module.exports = function (line) {
   var parsed = {};
   var url = require('url');
 
-  var request_labels = 
+  var request_labels =
   [
     'request_method',
     'request_uri',
@@ -66,7 +66,7 @@ module.exports = function (line) {
   });
 
   // backend
-  if(parsed.backend != -1) {
+  if( typeof parsed.backend !== 'undefined' && parsed.backend != -1) {
     parsed['backend_port'] = parsed.backend.split(":")[1];
     parsed['backend'] = parsed.backend.split(":")[0];
   } else {
